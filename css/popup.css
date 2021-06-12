@@ -6,3 +6,20 @@ body {
 #selected-count {
   color: skyblue;
 }
+
+.dropdown-menu {
+  overflow:auto;
+  /* max-height: 250px; */
+  min-width: 90%;
+}
+
+.dropdown-menu .autocomplete {
+	padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  font-size: small;
+}
+
+.dropdown-menu .autocomplete:hover {
+	background-color: #d9efff;
+}

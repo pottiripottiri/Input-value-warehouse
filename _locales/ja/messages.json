@@ -17,7 +17,8 @@
   "popup_message_duplicate_title": { "message": "同じタイトルがあります。<br>上書きしますか？" },
   "popup_cancel_button": { "message": "キャンセル" },
   "popup_overwrite_button": { "message": "上書き" },
-  "popup_selected_count": { "message": "選択中の項目数：$1" },
+  "popup_selected_count": { "message": "＜選択モード中＞ 項目数：$1" },
+  "popup_link_option_page": { "message": "保存した入力値は<a href=\"#\" id=\"link-option-page\">オプションページ</a>で整理できます。" },
 
   "options_guide_edit": { "message": "URLとタイトルを選択すると、保存されている入力値を編集することができます。" },
   "options_delete_url_button": { "message": "このURLをまるごと削除" },
@@ -31,6 +32,7 @@
   "options_label_check_off": { "message": "チェックなし" },
   "options_label_check_on": { "message": "チェックあり" },
   "options_label_attribute_id": { "message": "id属性" },
+  "options_label_attribute_num": { "message": "連番" },
   "options_label_attribute_name": { "message": "name属性" },
   "options_label_attribute_value": { "message": "入力値" },
   "options_label_attribute_label": { "message": "ラベル" },

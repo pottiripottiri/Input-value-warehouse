@@ -8,6 +8,7 @@ $(function () {
   let data_hash = {};
   let data_array = [];
   let tab_id;
+  let tab_url;
 
   /**
    * 現在タブ
@@ -29,6 +30,8 @@ $(function () {
       data_hash = {};
       data_array = [];
 
+      const autocomplete_element = $("#save-title-dropdown");
+      autocomplete_element.empty();
       const select_element = $("#select-load-title");
       select_element.empty();
 
@@ -60,6 +63,7 @@ $(function () {
         });
 
         data_array.forEach(r => {
+          autocomplete_element.append($('<option>').html("<a href=\"#\">" + r.title + "</a>").addClass("autocomplete").data("autocomplete", r.title).data("target", "save_title"));
           select_element.append($('<option>').html(r.title).val(r.title));
         });
 
@@ -116,7 +120,7 @@ $(function () {
             return true;
           }
 
-          let type = '';
+          let type = "";
           if ($(e).attr("type")) {
             type = $(e).attr("type");
           }
@@ -125,14 +129,18 @@ $(function () {
             return true;
           }
 
-          let key = target.tag + "-" + type + "-";
+          let key = target.tag + "-";
+          if (type != "") {
+            key += type + "-";
+          }
+
           if ($(e).attr("id") && $(e).attr("id").length > 0) {
             key += "#" + $(e).attr("id");
           } else if ($(e).attr("name") && $(e).attr("name").length > 0) {
             key += "[name=\"" + $(e).attr("name") + "\"]";
           }
 
-          if (!num_hash[key]) {
+          if (typeof num_hash[key] === "undefined") {
             num_hash[key] = 0;
           } else {
             num_hash[key]++;
@@ -212,6 +220,18 @@ $(function () {
 
   };
 
+  // イベント：閉じる
+  $(document).on('ontouched click', '.close', function () {
+    window.close();
+  });
+
+  // イベント：オートコンプリート
+  $(document).on('ontouched click', '.autocomplete', function () {
+    var text = $(this).data('autocomplete');
+    var target = $(this).data('target');
+    $('input[name="' + target + '"]').val(text);
+  });
+
   // イベント：保存
   $("#save-button").on("click", function () {
     if (data_hash[$("#save-title").val()]) {
@@ -262,9 +282,16 @@ $(function () {
               let e = $(key).get(value.num);
               if (value.type && (value.type == "checkbox" || value.type == "radio")) {
                 $(e).prop("checked", value.checked == "true" ? true : false);
+                $("<span class=\"ivw-applied-mark\">&hearts;</span>").insertAfter(e);
               } else {
                 $(e).val(value.value);
+                $(e).addClass("ivw-applied-form");
               }
+
+              setTimeout(() => {
+                $(".ivw-applied-form").removeClass("ivw-applied-form");
+                $(".ivw-applied-mark").remove();
+              }, 5000);
 
             });
 
@@ -281,6 +308,15 @@ $(function () {
         $("#select-load-title").val(selected);
 
       }));
+
+    // chrome.storage.local.set({
+    //   last_applied_title: {
+    //     [tab_url]: {
+    //       title: selected,
+    //       datetime: new Date().getTime()
+    //     }
+    //   }
+    // });
 
     return false;
 
@@ -333,13 +369,26 @@ $(function () {
     return false;
   });
 
+  // イベント：オプションページリンク
+    // イベント：選択モードクリア
+    $(document).on("click", "#link-option-page", function () {
+      chrome.runtime.openOptionsPage();
+      return false;
+    });
+
+  // 初期設定
   current_tab().then(function (tab) {
 
     tab_id = tab.id;
+    tab_url = tab.url;
 
     chrome.scripting.insertCSS({
       target: { tabId: tab_id },
       files: ["/css/select.css"]
+    });
+    chrome.scripting.insertCSS({
+      target: { tabId: tab_id },
+      files: ["/css/apply.css"]
     });
     chrome.scripting.executeScript({
       target: { tabId: tab_id },
@@ -374,9 +423,16 @@ $(function () {
           $("#selected-count small").text(chrome.i18n.getMessage("popup_selected_count", [response[0].result.selected_count]));
         }
 
+        // chrome.storage.local.get(["last_applied_title"], function (result) {
+        //   if (typeof result.last_applied_title !== "undefined" && typeof result.last_applied_title[tab_url] !== "undefined") {
+        //     console.log(result.last_applied_title[tab_url].title);
+        //     $("#save-title").val(result.last_applied_title[tab_url].title);
+        //   }
+        //   chrome.storage.local.remove(["last_applied_title"]);
+        // });
+
       });
     }, 200);
 
   });
-
 });

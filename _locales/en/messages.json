@@ -17,7 +17,8 @@
   "popup_message_duplicate_title": { "message": "It has the same title. <br> Do you want to overwrite it?" },
   "popup_cancel_button": { "message": "Cancel" },
   "popup_overwrite_button": { "message": "Overwrite" },
-  "popup_selected_count": { "message": "Number of selected items:$1" },
+  "popup_selected_count": { "message": "<Selection mode> items:$1" },
+  "popup_link_option_page": { "message": "You can organize the saved input values ​​on the <a href=\"#\" id=\"link-option-page\">options page</a>." },
 
   "options_guide_edit": { "message": "You can edit the saved input values ​​by selecting the URL and title." },
   "options_delete_url_button": { "message": "Delete the entire URL" },
@@ -31,6 +32,7 @@
   "options_label_check_off": { "message": "no check" },
   "options_label_check_on": { "message": "Checked" },
   "options_label_attribute_id": { "message": "id attribute" },
+  "options_label_attribute_num": { "message": "seq" },
   "options_label_attribute_name": { "message": "name attribute" },
   "options_label_attribute_value": { "message": "Input value" },
   "options_label_attribute_label": { "message": "Label" },

@@ -112,12 +112,14 @@ $(function () {
     row_html += "    <input type=\"hidden\" class=\"ivw-row-tag\">";
     row_html += "    <input type=\"hidden\" class=\"ivw-row-type\">";
     row_html += "    <input type=\"hidden\" class=\"ivw-row-idx\">";
-    row_html += "    <input type=\"hidden\" class=\"ivw-row-num\">";
     if (row.type == "radio" || row.type == "checkbox") {
     } else {
       row_html += "    <input type=\"hidden\" class=\"ivw-row-checked\">";
     }
 
+    row_html += "  </td>";
+    row_html += "  <td>";
+    row_html += "    <input type=\"text\" class=\"form-control form-control-sm ivw-row-num\" size=\"1\" disabled>";
     row_html += "  </td>";
     row_html += "  <td>";
     row_html += "    <input type=\"text\" class=\"form-control form-control-sm ivw-row-name\" size=\"5\" disabled>";
@@ -271,6 +273,7 @@ $(function () {
           "tag" : $(tr).find(".ivw-row-tag").val(),
           "type": $(tr).find(".ivw-row-type").val(),
           "id": $(tr).find(".ivw-row-id").val(),
+          "num": $(tr).find(".ivw-row-num").val(),
           "name": $(tr).find(".ivw-row-name").val(),
           "value" : $(tr).find(".ivw-row-value").val(),
           "checked" : $(tr).find(".ivw-row-checked").val(),
