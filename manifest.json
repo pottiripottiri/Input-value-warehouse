@@ -1,7 +1,7 @@
 {
   "default_locale": "en",
-  "name": "Input Value Warehouse（β）",
-  "version": "0.0.2",
+  "name": "Input Value Warehouse",
+  "version": "1.0.0",
   "manifest_version": 3,
   "description": "This is an example to print Hello World in Chrome console",
   "icons": {

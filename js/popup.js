@@ -301,7 +301,7 @@ $(function () {
               $(".ivw-applied-form").removeClass("ivw-applied-form");
               $(".ivw-applied-mark").remove();
             }, 5000);
-            
+
           })
         }
       }, function () {
@@ -390,7 +390,7 @@ $(function () {
     });
     chrome.scripting.executeScript({
       target: { tabId: tab_id },
-      files: ["/node_modules/jquery/dist/jquery.min.js"],
+      files: ["/vendor/jquery-3.6.0/jquery-3.6.0.min.js"],
     });
     setTimeout(() => {
       chrome.scripting.executeScript({
