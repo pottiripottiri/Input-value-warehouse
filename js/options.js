@@ -102,6 +102,7 @@ $(function () {
    * 入力値リストロード
    */
   const row_html = function(row) {
+
     let row_html = "";
     row_html += "<tr>";
     row_html += "  <td class=\"text-center\">";
@@ -112,8 +113,7 @@ $(function () {
     row_html += "    <input type=\"hidden\" class=\"ivw-row-tag\">";
     row_html += "    <input type=\"hidden\" class=\"ivw-row-type\">";
     row_html += "    <input type=\"hidden\" class=\"ivw-row-idx\">";
-    if (row.type == "radio" || row.type == "checkbox") {
-    } else {
+    if (row.type != "radio" && row.type != "checkbox") {
       row_html += "    <input type=\"hidden\" class=\"ivw-row-checked\">";
     }
 
@@ -177,7 +177,7 @@ $(function () {
       row.find(".ivw-row-label").val(val.label);
       row.find(".ivw-row-name").val(val.name);
       row.find(".ivw-row-value").val(val.value);
-      row.find(".ivw-row-checked").val(val.checked);
+      row.find(".ivw-row-checked").val(val.checked.toString());
 
       element_table_values.find("tbody").append(row);
     });

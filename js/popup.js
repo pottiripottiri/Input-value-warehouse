@@ -270,31 +270,38 @@ $(function () {
               if (value.name && value.name.length) {
                 key += "[name=\"" + value.name + "\"]";
               }
-              if (value.type && (value.type == "checkbox" || value.type == "radio")) {
-                if (value.value && value.value.length) {
-                  key += "[value=\"" + value.value + "\"]";
-                }
-              }
-              if (!$(key).get(value.num)) {
-                return true;
-              }
 
               let e = $(key).get(value.num);
               if (value.type && (value.type == "checkbox" || value.type == "radio")) {
-                $(e).prop("checked", value.checked == "true" ? true : false);
+                if (value.value && value.value.length) {
+                  key += "[value=\"" + value.value + "\"]";
+                  e = $(key);
+                } else {
+                  e = $(key).get(value.num);
+                }
+              } else {
+                e = $(key).get(value.num);
+              }
+
+              if ($(e).length <= 0) {
+                return false;
+              }
+
+              if (value.type && (value.type == "checkbox" || value.type == "radio")) {
+                $(e).prop("checked", (value.checked || value.checked == "true") ? true : false);
                 $("<span class=\"ivw-applied-mark\">&hearts;</span>").insertAfter(e);
               } else {
                 $(e).val(value.value);
                 $(e).addClass("ivw-applied-form");
               }
 
-              setTimeout(() => {
-                $(".ivw-applied-form").removeClass("ivw-applied-form");
-                $(".ivw-applied-mark").remove();
-              }, 5000);
-
             });
 
+            setTimeout(() => {
+              $(".ivw-applied-form").removeClass("ivw-applied-form");
+              $(".ivw-applied-mark").remove();
+            }, 5000);
+            
           })
         }
       }, function () {
@@ -308,15 +315,6 @@ $(function () {
         $("#select-load-title").val(selected);
 
       }));
-
-    // chrome.storage.local.set({
-    //   last_applied_title: {
-    //     [tab_url]: {
-    //       title: selected,
-    //       datetime: new Date().getTime()
-    //     }
-    //   }
-    // });
 
     return false;
 
@@ -370,11 +368,11 @@ $(function () {
   });
 
   // イベント：オプションページリンク
-    // イベント：選択モードクリア
-    $(document).on("click", "#link-option-page", function () {
-      chrome.runtime.openOptionsPage();
-      return false;
-    });
+  // イベント：選択モードクリア
+  $(document).on("click", "#link-option-page", function () {
+    chrome.runtime.openOptionsPage();
+    return false;
+  });
 
   // 初期設定
   current_tab().then(function (tab) {
@@ -422,14 +420,6 @@ $(function () {
           $("#selected-count").show();
           $("#selected-count small").text(chrome.i18n.getMessage("popup_selected_count", [response[0].result.selected_count]));
         }
-
-        // chrome.storage.local.get(["last_applied_title"], function (result) {
-        //   if (typeof result.last_applied_title !== "undefined" && typeof result.last_applied_title[tab_url] !== "undefined") {
-        //     console.log(result.last_applied_title[tab_url].title);
-        //     $("#save-title").val(result.last_applied_title[tab_url].title);
-        //   }
-        //   chrome.storage.local.remove(["last_applied_title"]);
-        // });
 
       });
     }, 200);
