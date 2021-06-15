@@ -24,9 +24,9 @@
         <form>
           <p id="guide-mode"><small></small></p>
           <div class="form-group">
-            <input type="text" name="save_title" id="save-title" class="form-control dropdown-toggle" data-toggle="dropdown" required>
-            <ul id="save-title-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            </ul>
+            <input type="text" name="save_title" id="save-title" class="form-control" autocomplete="on" list="save-title-dropdown" required>
+            <datalist id="save-title-dropdown">
+            </datalist>
           </div>
           <div class="text-right">
             <button type="submit" id="save-button" class="btn btn-outline-primary btn-sm"><span data-i18n="popup_save_button"></span></button>
