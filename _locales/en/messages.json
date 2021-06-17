@@ -1,4 +1,6 @@
 {
+  "extension_name": { "message": "Self-input completion"},
+  "extension_description": {"message": "Saves form entries to make re-filling easier."},
   "popup_guide_save": { "message": "Save input value" },
   "popup_save_title_placeholder": { "message": "Please enter a title." },
   "popup_mode_select_button": { "message": "From the selected items" },
@@ -20,6 +22,7 @@
   "popup_selected_count": { "message": "<Selection mode> items:$1" },
   "popup_link_option_page": { "message": "You can organize the saved input values ​​on the <a href=\"#\" id=\"link-option-page\">options page</a>." },
 
+  "options_title": { "message": "Self-input completion(Options)" },
   "options_guide_edit": { "message": "You can edit the saved input values ​​by selecting the URL and title." },
   "options_delete_url_button": { "message": "Delete the entire URL" },
   "options_delete_title_button": { "message": "Delete this title altogether" },

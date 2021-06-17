@@ -1,9 +1,9 @@
 {
-  "default_locale": "en",
-  "name": "Input Value Warehouse",
+  "default_locale": "ja",
+  "name": "__MSG_extension_name__",
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "This is an example to print Hello World in Chrome console",
+  "description": "__MSG_extension_description__",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

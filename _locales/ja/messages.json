@@ -1,4 +1,6 @@
 {
+  "extension_name": { "message": "自前入力補完"},
+  "extension_description": {"message": "フォームの入力内容を保存し、再入力時に入力の手間を省きます。"},
   "popup_guide_save": { "message": "入力値を保存" },
   "popup_save_title_placeholder": { "message": "タイトルを入力してください。" },
   "popup_mode_select_button": { "message": "選択した項目から" },
@@ -20,6 +22,7 @@
   "popup_selected_count": { "message": "＜選択モード中＞ 項目数：$1" },
   "popup_link_option_page": { "message": "保存した入力値は<a href=\"#\" id=\"link-option-page\">オプションページ</a>で整理できます。" },
 
+  "options_title": { "message": "自前入力補完（オプション）" },
   "options_guide_edit": { "message": "URLとタイトルを選択すると、保存されている入力値を編集することができます。" },
   "options_delete_url_button": { "message": "このURLをまるごと削除" },
   "options_delete_title_button": { "message": "このタイトルをまるごと削除" },
