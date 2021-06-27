@@ -1,21 +1,24 @@
 $(function () {
 
   let url_hash = {};
+  let meta_hash = {};
   let url_array = [];
 
   const element_select_saved_url = $("#select-saved-url");
+  const element_selected_url_meta_title = $("#selected-url-meta-title");
   const element_select_saved_title = $("#select-saved-title");
   const element_table_values = $("#table-values");
   const element_button_save_values = $("#button-save-values");
-  
+
   /**
    * URLリストロード
    */
   const url_load = function() {
 
-    chrome.storage.local.get(["default"], function(result) {
+    chrome.storage.local.get(["default", "meta"], function(result) {
 
       url_hash = {};
+      meta_hash = {};
       url_array = [];
 
       element_select_saved_url.empty();
@@ -25,12 +28,16 @@ $(function () {
       element_select_saved_title.prop("disabled", true);
       element_table_values.find("tbody").empty();
       element_button_save_values.prop("disabled", true);
+      element_selected_url_meta_title.text("");
 
+      console.log(result);
       if (typeof result.default === "undefined") {
         return;
       }
 
-      url_hash = result.default;
+      url_hash = (typeof result.default === "undefined") ? {} : result.default;
+      meta_hash = (typeof result.meta === "undefined") ? {} : result.meta;
+
       for (let [key, value] of Object.entries(url_hash)) {
         url_array.push({url: key, data: value});
       }
@@ -69,10 +76,13 @@ $(function () {
     element_select_saved_title.prop("disabled", true);
     element_table_values.find("tbody").empty();
     element_button_save_values.prop("disabled", true);
+    element_selected_url_meta_title.text("");
 
     if (!url_hash[url]) {
       return;
     }
+
+    element_selected_url_meta_title.text((typeof meta_hash[url] === "undefined") ? "" : meta_hash[url].title);
 
     title_hash = url_hash[url];
     for (let [key, value] of Object.entries(title_hash)) {

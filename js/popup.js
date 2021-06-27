@@ -24,9 +24,10 @@ $(function () {
    */
   const reset = function () {
 
-    chrome.storage.local.get(["default"], function (result) {
+    chrome.storage.local.get(["default", "meta"], function (result) {
 
       data_all = {};
+      meta_all = {};
       data_hash = {};
       data_array = [];
 
@@ -42,7 +43,8 @@ $(function () {
         return;
       }
 
-      data_all = result.default;
+      data_all = typeof result.default === "undefined" ? [] : result.default;
+      meta_all = typeof result.meta === "undefined" ? [] : result.meta;
 
       chrome.tabs.query({ active: true, currentWindow: true }, (t) => {
 
@@ -180,7 +182,11 @@ $(function () {
 
         });
 
-        return { url: location.href, values: values };
+        // ページのメタ情報
+        meta = {};
+        meta['title'] = $("head > title").text();
+
+        return { url: location.href, values: values, meta: meta };
 
       }
     }, function (response) {
@@ -189,12 +195,14 @@ $(function () {
         data_all[response[0].result.url] = {};
       }
 
+      meta_all[response[0].result.url] = response[0].result.meta;
+
       data_all[response[0].result.url][$("#save-title").val()] = {
         updated: new Date().getTime(),
         values: response[0].result.values
       };
 
-      chrome.storage.local.set({ default: data_all }, function () {
+      chrome.storage.local.set({ default: data_all, meta: meta_all }, function () {
         chrome.scripting.executeScript({
           target: { tabId: tab_id },
           files: ["/js/select_off.js"]
