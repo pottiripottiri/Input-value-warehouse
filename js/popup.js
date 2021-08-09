@@ -261,9 +261,11 @@ $(function () {
 
   // イベント：保存
   $("#save-button").on("click", function () {
-    title = $("#save-title").val();
+    const save_type = $('[name="save_type"]:checked').val();
+    const title = $("#save-title").val();
     for (let d of data_array) {
-      if (d.original_title == title) {
+      if (d.original_title == title &&
+        ((save_type == 0 && d.type == 'extract') || (save_type == 1 && d.type == 'site'))) {
         $("#overwrite-confirm-modal").modal("show");
         return false;
       }
