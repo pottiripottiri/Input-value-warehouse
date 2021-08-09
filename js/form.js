@@ -12,7 +12,7 @@ $(function() {
         $(this).addClass("ivw-selected-form");
       }
     });
-    $(document).on("click.ivw_select_mode", "body.ivm-mode-select select,textarea", function() {
+    $(document).on("click.ivw_select_mode", "body.ivm-mode-select select,body.ivm-mode-select textarea", function() {
       $(this).addClass("ivw-selected-form");
     });
   }

@@ -5,10 +5,8 @@ $(function () {
   $("#guide-save-operation").hide();
 
   let data_all = {};
-  let data_hash = {};
   let data_array = [];
   let tab_id;
-  let tab_url;
 
   /**
    * 現在タブ
@@ -37,7 +35,7 @@ $(function () {
       select_element.empty();
 
       if (typeof result.default === "undefined") {
-        $("#select-load-title").prop("disabled", true);
+        select_element.prop("disabled", true);
         $("#load-button").prop("disabled", true);
         $("#message-no-title").show();
         return;
@@ -49,32 +47,46 @@ $(function () {
       chrome.tabs.query({ active: true, currentWindow: true }, (t) => {
 
         const url = t[0].url;
-        if (!data_all[url]) {
+
+        let url_object = new URL(url);
+        let url_site = url_object.protocol + "://" + url_object.hostname;
+
+        if (!data_all[url] && !data_all[site] && !data_all['common']) {
           return;
         }
 
-        data_hash = data_all[url];
-        for (let [key, value] of Object.entries(data_hash)) {
-          data_array.push({ title: key, updated: value.updated, data: value });
-        }
-
-        data_array.sort(function (a, b) {
+        const sorter = function (a, b) {
           if (a.updated > b.updated) return -1;
           if (a.updated < b.updated) return 1;
           return 0;
-        });
+        };
+        if (data_all[url]) {
+          for (let [title, value] of Object.entries(data_all[url])) {
+            data_array.push({ title: title, original_title: title, updated: value.updated, data: value, url: url, type: 'extract' });
+          }
+          data_array.sort(sorter);
+        }
 
-        data_array.forEach(r => {
-          autocomplete_element.append($('<option>').html("<a href=\"#\">" + r.title + "</a>").addClass("autocomplete").data("autocomplete", r.title).data("target", "save_title"));
-          select_element.append($('<option>').html(r.title).val(r.title));
+        if (url != url_site && data_all[url_site]) {
+          let site_array = [];
+          for (let [title, value] of Object.entries(data_all[url_site])) {
+            site_array.push({ title: "*" + title, original_title: title, updated: value.updated, data: value, url: url_site, type: 'site' });
+          }
+          site_array.sort(sorter);
+          data_array = data_array.concat(site_array);
+        }
+
+        data_array.forEach(function (v, k) {
+          autocomplete_element.append($('<option>').html("<a href=\"#\">" + v.title + "</a>").addClass("autocomplete").data("autocomplete", v.title).data("target", "save_title"));
+          select_element.append($('<option>').html(v.title).val(k).attr("type", v.type));
         });
 
         if (data_array.lentgh <= 0) {
-          $("#select-load-title").prop("disabled", true);
+          select_element.prop("disabled", true);
           $("#load-button").prop("disabled", true);
           $("#message-no-title").show();
         } else {
-          $("#select-load-title").prop("disabled", false);
+          select_element.prop("disabled", false);
           $("#load-button").prop("disabled", false);
           $("#message-no-title").hide();
         }
@@ -90,11 +102,13 @@ $(function () {
    */
   const save = function () {
 
+    const save_type = $('[name="save_type"]:checked').val();
+
     chrome.scripting.executeScript({
       target: { tabId: tab_id },
       function: function () {
 
-        // 入力内容の収集      
+        // 入力内容の収集
         let num_hash = {};
 
         const types = ["text", "search", "tel", "url", "email", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color", "radio", "checkbox"];
@@ -191,13 +205,18 @@ $(function () {
       }
     }, function (response) {
 
-      if (!data_all[response[0].result.url]) {
-        data_all[response[0].result.url] = {};
+      let url_key = response[0].result.url;
+      if (save_type == 1) {
+        let url_object = new URL(url_key);
+        url_key = url_object.protocol + "://" + url_object.hostname;
       }
 
-      meta_all[response[0].result.url] = response[0].result.meta;
+      if (!data_all[url_key]) {
+        data_all[url_key] = {};
+      }
 
-      data_all[response[0].result.url][$("#save-title").val()] = {
+      meta_all[url_key] = response[0].result.meta;
+      data_all[url_key][$("#save-title").val()] = {
         updated: new Date().getTime(),
         values: response[0].result.values
       };
@@ -242,9 +261,12 @@ $(function () {
 
   // イベント：保存
   $("#save-button").on("click", function () {
-    if (data_hash[$("#save-title").val()]) {
-      $("#overwrite-confirm-modal").modal("show");
-      return false;
+    title = $("#save-title").val();
+    for (let d of data_array) {
+      if (d.original_title == title) {
+        $("#overwrite-confirm-modal").modal("show");
+        return false;
+      }
     }
     save();
     return false;
@@ -261,12 +283,13 @@ $(function () {
   $("#load-button").on("click", function () {
 
     let selected = $("#select-load-title").val();
-    chrome.storage.local.set({ selected_data: data_hash[selected] },
+
+    chrome.storage.local.set({ selected_data: data_array[selected] },
       chrome.scripting.executeScript({
         target: { tabId: tab_id },
         function: function () {
           chrome.storage.local.get(["selected_data"], function (result) {
-            result.selected_data.values.forEach(function (value) {
+            result.selected_data.data.values.forEach(function (value) {
 
               let key = value.tag;
               if (value.type && value.type.length) {

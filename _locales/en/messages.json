@@ -21,6 +21,8 @@
   "popup_overwrite_button": { "message": "Overwrite" },
   "popup_selected_count": { "message": "<Selection mode> items:$1" },
   "popup_link_option_page": { "message": "You can organize the saved input values ​​on the <a href=\"#\" id=\"link-option-page\">options page</a>." },
+  "popup_for_this_url": { "message": "For the current URL" },
+  "popup_for_this_site": { "message": "For the entire site" },
 
   "options_title": { "message": "Self-input completion(Options)" },
   "options_guide_edit": { "message": "You can edit the saved input values ​​by selecting the URL and title." },

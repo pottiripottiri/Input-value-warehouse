@@ -21,6 +21,8 @@
   "popup_overwrite_button": { "message": "上書き" },
   "popup_selected_count": { "message": "＜選択モード中＞ 項目数：$1" },
   "popup_link_option_page": { "message": "保存した入力値は<a href=\"#\" id=\"link-option-page\">オプションページ</a>で整理できます。" },
+  "popup_for_this_url": { "message": "現在のURLに対して" },
+  "popup_for_this_site": { "message": "サイト全体に対して" },
 
   "options_title": { "message": "自前入力補完（オプション）" },
   "options_guide_edit": { "message": "URLとタイトルを選択すると、保存されている入力値を編集することができます。" },
