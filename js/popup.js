@@ -51,7 +51,7 @@ $(function () {
         let url_object = new URL(url);
         let url_site = url_object.protocol + "://" + url_object.hostname;
 
-        if (!data_all[url] && !data_all[site] && !data_all['common']) {
+        if (!data_all[url] && !data_all[url_site] && !data_all['common']) {
           return;
         }
 
@@ -77,7 +77,7 @@ $(function () {
         }
 
         data_array.forEach(function (v, k) {
-          autocomplete_element.append($('<option>').html("<a href=\"#\">" + v.title + "</a>").addClass("autocomplete").data("autocomplete", v.title).data("target", "save_title"));
+          autocomplete_element.append($('<option>').html("<a href=\"#\">" + v.original_title + "</a>").addClass("autocomplete").data("autocomplete", v.original_title).data("target", "save_title"));
           select_element.append($('<option>').html(v.title).val(k).attr("type", v.type));
         });
 
